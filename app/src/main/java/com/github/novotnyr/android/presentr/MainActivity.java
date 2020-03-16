@@ -7,6 +7,7 @@ import android.widget.*;
 import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import butterknife.*;
 
 public class MainActivity extends AppCompatActivity {
@@ -14,6 +15,8 @@ public class MainActivity extends AppCompatActivity {
     ListView userListView;
 
     ArrayAdapter<User> userListViewAdapter;
+
+    private UserListViewModel userListViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +26,12 @@ public class MainActivity extends AppCompatActivity {
 
         userListViewAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
         userListView.setAdapter(userListViewAdapter);
+
+        userListViewModel = new ViewModelProvider(this).get(UserListViewModel.class);
+        userListViewModel.getUsers().observe(this, users -> {
+            userListViewAdapter.clear();
+            userListViewAdapter.addAll(users);
+        });
     }
 
     public void onFloatingActionButtonClick(View view) {
