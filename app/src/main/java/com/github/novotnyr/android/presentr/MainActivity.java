@@ -1,7 +1,7 @@
 package com.github.novotnyr.android.presentr;
 
 import android.os.Bundle;
-import android.view.View;
+import android.view.*;
 import android.widget.*;
 
 import java.util.ArrayList;
@@ -38,4 +38,11 @@ public class MainActivity extends AppCompatActivity {
         SendPresenceAsyncTask task = new SendPresenceAsyncTask();
         task.execute(new User("John"));
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
 }
