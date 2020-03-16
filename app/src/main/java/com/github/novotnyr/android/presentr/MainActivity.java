@@ -1,6 +1,7 @@
 package com.github.novotnyr.android.presentr;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.*;
 
 import java.util.ArrayList;
@@ -22,5 +23,10 @@ public class MainActivity extends AppCompatActivity {
 
         userListViewAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
         userListView.setAdapter(userListViewAdapter);
+    }
+
+    public void onFloatingActionButtonClick(View view) {
+        SendPresenceAsyncTask task = new SendPresenceAsyncTask();
+        task.execute(new User("John"));
     }
 }
