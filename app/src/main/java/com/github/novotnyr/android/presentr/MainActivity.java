@@ -45,4 +45,12 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_item_refresh) {
+            userListViewModel.refresh();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
