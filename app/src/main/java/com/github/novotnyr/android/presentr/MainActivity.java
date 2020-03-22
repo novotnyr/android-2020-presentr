@@ -1,6 +1,6 @@
 package com.github.novotnyr.android.presentr;
 
-import android.os.Bundle;
+import android.os.*;
 import android.view.*;
 import android.widget.*;
 
@@ -18,6 +18,10 @@ public class MainActivity extends AppCompatActivity {
 
     private UserListViewModel userListViewModel;
 
+    private Handler periodicHandler = new Handler();
+
+    private Runnable periodicTask = new RefreshUsersTask();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +36,18 @@ public class MainActivity extends AppCompatActivity {
             userListViewAdapter.clear();
             userListViewAdapter.addAll(users);
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        periodicHandler.postDelayed(periodicTask, 60 * 1000);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        periodicHandler.removeCallbacks(periodicTask);
     }
 
     public void onFloatingActionButtonClick(View view) {
@@ -52,5 +68,13 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    class RefreshUsersTask implements Runnable {
+        @Override
+        public void run() {
+            userListViewModel.refresh();
+            periodicHandler.postDelayed(periodicTask, 60 * 1000);
+        }
     }
 }
