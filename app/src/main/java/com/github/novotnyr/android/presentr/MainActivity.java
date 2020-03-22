@@ -1,6 +1,7 @@
 package com.github.novotnyr.android.presentr;
 
 import android.os.*;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
     class RefreshUsersTask implements Runnable {
         @Override
         public void run() {
+            Log.d("Presentr#RefreshUsers", "Refreshing user list");
             userListViewModel.refresh();
             periodicHandler.postDelayed(periodicTask, 60 * 1000);
         }
