@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import butterknife.*;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.userListView)
@@ -52,8 +55,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onFloatingActionButtonClick(View view) {
-        SendPresenceAsyncTask task = new SendPresenceAsyncTask();
-        task.execute(new User("John"));
+        Call<Void> login = PresentrApi.API.login(new User("John").getLogin());
+        login.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Toast.makeText(getApplicationContext(), "Success.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e(getClass().getName(), "Unable to send presence", t);
+            }
+        });
     }
 
     @Override
